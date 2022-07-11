@@ -1,0 +1,20 @@
+build:
+    docker:
+        web: Dockerfile
+        worker: Dockerfile
+release:
+    image: web
+    command:
+        -  python manage.py makemigrations
+        -  python manage.py migrate
+run:
+    web: 
+        image: web
+    worker: 
+        command:
+            - celery -A C2D worker -l info
+        image: worker
+    worker2:
+        command: 
+            - celery -A C2D beat -l info
+        image: worker   
